@@ -5,6 +5,8 @@ const {
   removeProductFromCart,
 } = require(".");
 
+const { PRODUCTID } = require("../data/productId");
+
 describe("CartTest", () => {
   afterEach(() => {
     resetRecords();
@@ -19,27 +21,27 @@ describe("CartTest", () => {
     let result2 = getProducts();
     expect(result2[0].quantity).toBe(10);
 
-    addProductToCart(1, 2);
+    addProductToCart(PRODUCTID.GoogleHome, 2);
     result2 = getProducts();
     expect(result2[0].quantity).toBe(8);
 
-    addProductToCart(1, 4);
+    addProductToCart(PRODUCTID.GoogleHome, 4);
     result2 = getProducts();
     expect(result2[0].quantity).toBe(4);
 
     //ignore invalid request and return previous state
-    addProductToCart(1, 5);
+    addProductToCart(PRODUCTID.GoogleHome, 5);
     result2 = getProducts();
     expect(result2[0].quantity).toBe(4);
   });
 
   test("addProductToCart: valid product id and quantity", () => {
-    addProductToCart(2, 5);
+    addProductToCart(PRODUCTID.MacBookPro, 5);
     expect(getProducts()[1].quantity).toBe(0);
   });
 
   test("addProductToCart: valid product id and invalid quantity", () => {
-    const result3 = addProductToCart(1, 20);
+    const result3 = addProductToCart(PRODUCTID.GoogleHome, 20);
     expect(result3).toStrictEqual({
       itemCount: 0,
       totalPrice: 0,
@@ -66,57 +68,57 @@ describe("CartTest", () => {
   });
 
   test("removeProductFromCart: valid product id and valid quantity", () => {
-    addProductToCart(1, 2);
+    addProductToCart(PRODUCTID.GoogleHome, 2);
 
     expect(getProducts()[0].quantity).toBe(8);
 
-    removeProductFromCart(1, 2);
+    removeProductFromCart(PRODUCTID.GoogleHome, 2);
 
     expect(getProducts()[0].quantity).toBe(10);
   });
 
   test("Macbook promotion : freebie in stock", () => {
-    let cart = addProductToCart(2, 1);
+    let cart = addProductToCart(PRODUCTID.MacBookPro, 1);
     expect(cart.cartItems.length).toBe(2);
     expect(cart.totalPrice).toBe(5399.99);
-    cart = addProductToCart(2, 1);
+    cart = addProductToCart(PRODUCTID.MacBookPro, 1);
     expect(cart.cartItems.length).toBe(2);
     expect(cart.totalPrice).toBe(5399.99 * 2);
   });
 
   test("Macbook promotion : freebie out of stock", () => {
-    let cart = addProductToCart(2, 3);
+    let cart = addProductToCart(PRODUCTID.MacBookPro, 3);
     expect(cart.cartItems.length).toBe(2);
     expect(cart.totalPrice).toBe(5399.99 * 3);
   });
 
   test("GoogleHome promotion: Buy3GoogleHomesforthepriceof2", () => {
     //test price for 2
-    let cart = addProductToCart(1, 2);
+    let cart = addProductToCart(PRODUCTID.GoogleHome, 2);
     expect(cart.cartItems.length).toBe(1);
     expect(cart.totalPrice).toBe(49.99 * 2);
     //add one more item
-    cart = addProductToCart(1, 1);
+    cart = addProductToCart(PRODUCTID.GoogleHome, 1);
     expect(cart.cartItems.length).toBe(1);
     expect(cart.totalPrice).toBe(49.99 * 2);
 
-    cart = addProductToCart(1, 7);
+    cart = addProductToCart(PRODUCTID.GoogleHome, 7);
     expect(cart.totalPrice).toBe(49.99 * 7);
   });
 
   test("AlexaSpeaker promotion: 10 pc discount on more than 3", () => {
     //test price for 2
-    let cart = addProductToCart(3, 2);
+    let cart = addProductToCart(PRODUCTID.AlexaSpeaker, 2);
     expect(cart.cartItems.length).toBe(1);
     expect(cart.totalPrice).toBe(109.5 * 2);
     //add one more item
-    cart = addProductToCart(3, 1);
+    cart = addProductToCart(PRODUCTID.AlexaSpeaker, 1);
     expect(cart.cartItems.length).toBe(1);
     expect(cart.totalPrice).toBe(109.5 * 3);
     //more than 3
-    cart = addProductToCart(3, 1);
+    cart = addProductToCart(PRODUCTID.AlexaSpeaker, 1);
     expect(cart.totalPrice).toBe(109.5 * 4 - 109.5 * 4 * 0.1);
-    cart = addProductToCart(3, 6);
+    cart = addProductToCart(PRODUCTID.AlexaSpeaker, 6);
     expect(cart.totalPrice).toBe(109.5 * 10 - 109.5 * 10 * 0.1);
   });
 });

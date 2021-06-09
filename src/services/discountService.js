@@ -1,5 +1,7 @@
+const { PRODUCTID } = require("../data/productId");
+
 const applyAlexaDiscount = (cart) => {
-  const alexaItem = cart.cartItems.find((item) => item.product.id === 3);
+  const alexaItem = cart.cartItems.find((item) => item.product.id === PRODUCTID.AlexaSpeaker);
   if (alexaItem && alexaItem.quantity > 3) {
     const alexaTotalCost = (alexaItem.product.price * alexaItem.quantity) / 100;
 
@@ -11,8 +13,8 @@ const applyAlexaDiscount = (cart) => {
 };
 
 const applyMacbookDiscount = (cart) => {
-  const macbookItem = cart.cartItems.find((item) => item.product.id === 2);
-  const rBerryPiItem = cart.cartItems.find((item) => item.product.id === 4);
+  const macbookItem = cart.cartItems.find((item) => item.product.id === PRODUCTID.MacBookPro);
+  const rBerryPiItem = cart.cartItems.find((item) => item.product.id === PRODUCTID.RaspberryPiB);
 
   if (
     macbookItem &&
@@ -35,7 +37,7 @@ const applyMacbookDiscount = (cart) => {
 };
 
 const applyGoogleHomeDiscount = (cart) => {
-  const googleHomeItem = cart.cartItems.find((item) => item.product.id === 1);
+  const googleHomeItem = cart.cartItems.find((item) => item.product.id === PRODUCTID.GoogleHome);
   if (googleHomeItem) {
     const discount = (
       (Math.floor(googleHomeItem?.quantity / 3) *

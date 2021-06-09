@@ -1,27 +1,29 @@
+const { PRODUCTID } = require("./productId");
+
 const initialProduct = [
   {
-    id: 1,
+    id: PRODUCTID.GoogleHome,
     sku: "120P90",
     title: "GoogleHome",
     quantity: 10,
     price: 4999,
   },
   {
-    id: 2,
+    id: PRODUCTID.MacBookPro,
     sku: "43N23P",
     title: "MacBookPro",
     quantity: 5,
     price: 539999,
   },
   {
-    id: 3,
+    id: PRODUCTID.AlexaSpeaker,
     sku: "A304SD",
     title: "AlexaSpeaker",
     quantity: 10,
     price: 10950,
   },
   {
-    id: 4,
+    id: PRODUCTID.RaspberryPiB,
     sku: "234234",
     title: "RaspberryPiB",
     quantity: 2,
@@ -37,5 +39,5 @@ const initialCart = {
 
 module.exports = {
   initialProduct,
-  initialCart
+  initialCart,
 };

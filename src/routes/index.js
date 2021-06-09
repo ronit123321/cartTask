@@ -1,10 +1,4 @@
 const {
-  initialProduct,
-  initialCart,
-  PRODUCTID,
-} = require("../data/initialState");
-
-const {
   isMacbook,
   findAndValidateByProductId,
   validateProductQuantity,
@@ -23,6 +17,8 @@ const {
   calculateCartPrice,
   resetCart,
 } = require("../services/cartService");
+
+const { PRODUCTID } = require("../data/productId");
 
 var _ = require("lodash");
 
@@ -70,15 +66,17 @@ const getCart = () => {
 const applyMacbookPromotion = (quantity) => {
   //if less or equal to max stock
   const products = getSessionProducts();
-  const maxStock = products.find((product) => product.id === 4).quantity;
-  if (quantity <= maxStock) addProductToCart(4, quantity);
+  const maxStock = products.find(
+    (product) => product.id === PRODUCTID.RaspberryPiB
+  ).quantity;
+  if (quantity <= maxStock) addProductToCart(PRODUCTID.RaspberryPiB, quantity);
   else {
-    addProductToCart(4, maxStock);
+    addProductToCart(PRODUCTID.RaspberryPiB, maxStock);
   }
 };
 
 const removeMacbookPromotion = (quantity) => {
-  removeProductFromCart(4, quantity);
+  removeProductFromCart(PRODUCTID.RaspberryPiB, quantity);
 };
 
 module.exports = {

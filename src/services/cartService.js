@@ -4,6 +4,7 @@ const {
   applyGoogleHomeDiscount,
   applyMacbookDiscount,
 } = require("../services/discountService");
+
 var _ = require("lodash");
 
 var cart = _.cloneDeep(initialCart);
