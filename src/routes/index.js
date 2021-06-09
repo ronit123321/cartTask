@@ -66,8 +66,7 @@ const getCart = () => {
   return getUserCart();
 };
 
-//Logic
-
+//Promotion item logic --- unable to move out and avoid cyclic dependencies
 const applyMacbookPromotion = (quantity) => {
   //if less or equal to max stock
   const products = getSessionProducts();
