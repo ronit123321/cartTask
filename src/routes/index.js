@@ -1,5 +1,4 @@
 const {
-  isMacbook,
   findAndValidateByProductId,
   validateProductQuantity,
 } = require("../utils");
@@ -12,20 +11,21 @@ const {
 } = require("../services/productService");
 
 const {
-  getUserCart,
-  updateProductQuantityToCart,
-  calculateCartPrice,
-  resetCart,
-} = require("../services/cartService");
+  resetUserCart,
+  addProductToUserCart,
+  removeProductFromUserCart,
+} = require("../services/userCartService");
 
-const { PRODUCTID } = require("../data/productId");
-
-var _ = require("lodash");
+const {
+  resetSessionCart,
+  getSessionCart,
+  updateSessionCart,
+} = require("../services/sessionCart");
 
 const resetRecords = () => {
-  resetCart();
+  resetUserCart();
   resetProducts();
-  return getCart();
+  resetSessionCart();
 };
 
 const addProductToCart = (id, quantity) => {
@@ -33,25 +33,21 @@ const addProductToCart = (id, quantity) => {
   const product = findAndValidateByProductId(products, id);
   if (product && validateProductQuantity(product, quantity)) {
     reduceProductQuantity(products, product.id, quantity);
-    updateProductQuantityToCart(product, quantity);
-    if (isMacbook(id)) applyMacbookPromotion(quantity);
-    return calculateCartPrice();
+    const usesrCart = addProductToUserCart(product, quantity);
+    updateSessionCart(usesrCart);
   }
-  // throw error later
-  return getCart();
+  return getSessionCart();
 };
 
 const removeProductFromCart = (id, quantity) => {
   const products = getSessionProducts();
   const product = findAndValidateByProductId(products, id);
-
   if (product && validateProductQuantity(product, quantity)) {
     increaseProductQuantity(product.id, quantity);
-    updateProductQuantityToCart(product, quantity);
-    if (isMacbook(id)) removeMacbookPromotion(quantity);
-    return calculateCartPrice();
+    const usesrCart = removeProductFromUserCart(product, quantity);
+    updateSessionCart(usesrCart);
   }
-  return { ...cart };
+  return getSessionCart();
 };
 
 const getProducts = () => {
@@ -59,24 +55,7 @@ const getProducts = () => {
 };
 
 const getCart = () => {
-  return getUserCart();
-};
-
-//Promotion item logic --- unable to move out and avoid cyclic dependencies
-const applyMacbookPromotion = (quantity) => {
-  //if less or equal to max stock
-  const products = getSessionProducts();
-  const maxStock = products.find(
-    (product) => product.id === PRODUCTID.RaspberryPiB
-  ).quantity;
-  if (quantity <= maxStock) addProductToCart(PRODUCTID.RaspberryPiB, quantity);
-  else {
-    addProductToCart(PRODUCTID.RaspberryPiB, maxStock);
-  }
-};
-
-const removeMacbookPromotion = (quantity) => {
-  removeProductFromCart(PRODUCTID.RaspberryPiB, quantity);
+  return getSessionCart();
 };
 
 module.exports = {

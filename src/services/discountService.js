@@ -1,58 +1,54 @@
 const { PRODUCTID } = require("../data/productId");
+const { getSessionProducts } = require("../services/productService");
+const {
+  getRasBerryPiFromProducts,
 
-const applyAlexaDiscount = (cart) => {
-  const alexaItem = cart.cartItems.find((item) => item.product.id === PRODUCTID.AlexaSpeaker);
-  if (alexaItem && alexaItem.quantity > 3) {
-    const alexaTotalCost = (alexaItem.product.price * alexaItem.quantity) / 100;
+  convertToCustomFloat,
+} = require("../utils");
 
-    const discount = parseFloat(alexaTotalCost * 0.1).toFixed(2);
-    cart.totalPrice = parseFloat((cart.totalPrice - discount).toFixed(2));
-  }
+const applyAlexaDiscount = (sessionCart, alexaItem) => {
+  const alexaTotalCost = alexaItem.product.price * alexaItem.quantity;
+  const discount = convertToCustomFloat(alexaTotalCost * 0.1);
 
-  return cart;
+  const promotionalItemPrice = convertToCustomFloat(
+    (alexaTotalCost - discount) / alexaItem.quantity
+  );
+  sessionCart.cartItems.forEach((item) => {
+    if (item.product.id === PRODUCTID.AlexaSpeaker)
+      item.product.price = promotionalItemPrice;
+  });
 };
 
-const applyMacbookDiscount = (cart) => {
-  const macbookItem = cart.cartItems.find((item) => item.product.id === PRODUCTID.MacBookPro);
-  const rBerryPiItem = cart.cartItems.find((item) => item.product.id === PRODUCTID.RaspberryPiB);
-
-  if (
-    macbookItem &&
-    rBerryPiItem &&
-    macbookItem.quantity <= rBerryPiItem.quantity
-  ) {
-    const discount = (rBerryPiItem.product.price * rBerryPiItem.quantity) / 100;
-    cart.totalPrice = parseFloat((cart.totalPrice - discount).toFixed(2));
-  }
-  if (
-    macbookItem &&
-    rBerryPiItem &&
-    macbookItem.quantity > rBerryPiItem.quantity
-  ) {
-    const discount = (rBerryPiItem.product.price * rBerryPiItem.quantity) / 100;
-    cart.totalPrice = parseFloat((cart.totalPrice - discount).toFixed(2));
-  }
-
-  return cart;
+const applyMacbookDiscount = (sessionCart, macbookItem) => {
+  const products = getSessionProducts();
+  let rasBerryPiInventory = getRasBerryPiFromProducts(products);
+  rasBerryPiInventory.price = 0;
+  const maxStock = rasBerryPiInventory.quantity;
+  const quantityToAdd =
+    macbookItem.quantity <= maxStock ? macbookItem.quantity : maxStock;
+  sessionCart.cartItems.push({
+    product: rasBerryPiInventory,
+    quantity: quantityToAdd,
+  });
 };
 
-const applyGoogleHomeDiscount = (cart) => {
-  const googleHomeItem = cart.cartItems.find((item) => item.product.id === PRODUCTID.GoogleHome);
-  if (googleHomeItem) {
-    const discount = (
-      (Math.floor(googleHomeItem?.quantity / 3) *
-        googleHomeItem.product.price) /
-      100
-    ).toFixed(2);
-
-    cart.totalPrice = parseFloat((cart.totalPrice - discount).toFixed(2));
-  }
-
-  return cart;
+const applyGoogleHomeDiscount = (sessionCart, googleHomeItem) => {
+  const discount = convertToCustomFloat(
+    Math.floor(googleHomeItem.quantity / 3) * googleHomeItem.product.price
+  );
+  const currentGoogleHomePrice =
+    googleHomeItem.product.price * googleHomeItem.quantity;
+  const promotionalItemPrice = convertToCustomFloat(
+    (currentGoogleHomePrice - discount) / googleHomeItem.quantity
+  );
+  sessionCart.cartItems.forEach((item) => {
+    if (item.product.id === PRODUCTID.GoogleHome)
+      item.product.price = promotionalItemPrice;
+  });
 };
 
 module.exports = {
-    applyAlexaDiscount,
-    applyMacbookDiscount,
-    applyGoogleHomeDiscount
-}
+  applyAlexaDiscount,
+  applyMacbookDiscount,
+  applyGoogleHomeDiscount,
+};

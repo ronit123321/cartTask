@@ -4,7 +4,6 @@ var _ = require("lodash");
 
 var products = _.cloneDeep(initialProduct);
 
-
 const reduceProductQuantity = (products, id, quantity) => {
   products.find((product) => product.id === id).quantity -= quantity;
   return products;
@@ -20,11 +19,11 @@ const resetProducts = () => {
 
 const getSessionProducts = () => {
   return [...products];
-}
+};
 
 module.exports = {
-    reduceProductQuantity,
-    increaseProductQuantity,
-    resetProducts,
-    getSessionProducts
+  reduceProductQuantity,
+  increaseProductQuantity,
+  resetProducts,
+  getSessionProducts,
 };
