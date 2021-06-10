@@ -19,7 +19,7 @@ const promotions = [
       offerCondition: 2,
       productId: PRODUCTID.GoogleHome,
     },
-    offers: [applyGoogleHomeDiscount],
+    offers: [],
   },
   {
     type: PROMOTION_TYPE.FREEBIE,
