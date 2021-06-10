@@ -13,8 +13,8 @@ const isMacbook = (id) => id === PRODUCTID.MacBookPro;
 const getMacbookFromCart = (cart) =>
   cart.cartItems.find((item) => item.product.id === PRODUCTID.MacBookPro);
 
-const getRasBerryPiFromProducts = (products) =>
-  products.find((product) => product.id === PRODUCTID.RaspberryPiB);
+const getFreebieFromProducts = (products, id) =>
+  products.find((product) => product.id === id);
 
 const getGoogleHomeItemFromCart = (cart) =>
   cart.cartItems.find((item) => item.product.id === PRODUCTID.GoogleHome);
@@ -36,7 +36,7 @@ module.exports = {
   findAndValidateByProductId,
   validateProductQuantity,
   getMacbookFromCart,
-  getRasBerryPiFromProducts,
+  getFreebieFromProducts,
   getGoogleHomeItemFromCart,
   convertToCustomFloat,
   getAlexaItemFromCart,
