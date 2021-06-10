@@ -1,8 +1,4 @@
 const { PRODUCTID } = require("./productId");
-const {
-  applyAlexaDiscount,
-  applyGoogleHomeDiscount,
-} = require("../services/discountService");
 
 const PROMOTION_TYPE = Object.freeze({
   FREEBIE: "FREEBIE",
@@ -25,8 +21,8 @@ const promotions = [
     type: PROMOTION_TYPE.FREEBIE,
     productId: PRODUCTID.MacBookPro,
     condition: {
-      cartUnit : 1,
-      offerCondition : 0,
+      cartUnit: 1,
+      offerCondition: 0,
       productId: PRODUCTID.RaspberryPiB,
     },
     offers: [],
@@ -35,11 +31,11 @@ const promotions = [
     type: PROMOTION_TYPE.DISCOUNT,
     productId: PRODUCTID.AlexaSpeaker,
     condition: {
-      cartUnit: 4,
+      cartUnit: 3,
       offerCondition: 10,
       productId: PRODUCTID.AlexaSpeaker,
     },
-    offers: [applyAlexaDiscount],
+    offers: [],
   },
 ];
 
