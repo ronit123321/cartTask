@@ -24,6 +24,13 @@ const convertToCustomFloat = (value) => parseFloat(value.toFixed(2));
 const getAlexaItemFromCart = (cart) =>
   cart.cartItems.find((item) => item.product.id === PRODUCTID.AlexaSpeaker);
 
+const getCurrentItem = (id, sessionCart) => {
+  if (id === PRODUCTID.GoogleHome)
+    return getGoogleHomeItemFromCart(sessionCart);
+  if (id === PRODUCTID.MacBookPro) return getMacbookFromCart(sessionCart);
+  if (id === PRODUCTID.AlexaSpeaker) return getAlexaItemFromCart(sessionCart);
+};
+
 module.exports = {
   isMacbook,
   findAndValidateByProductId,
@@ -32,5 +39,6 @@ module.exports = {
   getRasBerryPiFromProducts,
   getGoogleHomeItemFromCart,
   convertToCustomFloat,
-  getAlexaItemFromCart
+  getAlexaItemFromCart,
+  getCurrentItem,
 };

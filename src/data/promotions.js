@@ -8,19 +8,19 @@ const {
 const promotions = [
   {
     productId: PRODUCTID.GoogleHome,
-    promotions: [applyGoogleHomeDiscount],
+    offers: [applyGoogleHomeDiscount],
   },
   {
     productId: PRODUCTID.MacBookPro,
-    promotions: [applyMacbookDiscount],
+    offers: [applyMacbookDiscount],
   },
   {
     productId: PRODUCTID.AlexaSpeaker,
-    promotions: [applyAlexaDiscount],
+    offers: [applyAlexaDiscount],
   },
   {
     productId: PRODUCTID.RaspberryPiB,
-    promotions: [],
+    offers: [],
   },
 ];
 

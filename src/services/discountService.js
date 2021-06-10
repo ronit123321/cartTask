@@ -7,7 +7,8 @@ const {
 } = require("../utils");
 
 const applyAlexaDiscount = (sessionCart, alexaItem) => {
-  const alexaTotalCost = alexaItem.product.price * alexaItem.quantity;
+  if(alexaItem.quantity > 3) {
+    const alexaTotalCost = alexaItem.product.price * alexaItem.quantity;
   const discount = convertToCustomFloat(alexaTotalCost * 0.1);
 
   const promotionalItemPrice = convertToCustomFloat(
@@ -17,6 +18,7 @@ const applyAlexaDiscount = (sessionCart, alexaItem) => {
     if (item.product.id === PRODUCTID.AlexaSpeaker)
       item.product.price = promotionalItemPrice;
   });
+  }
 };
 
 const applyMacbookDiscount = (sessionCart, macbookItem) => {
