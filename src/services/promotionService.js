@@ -3,11 +3,9 @@ const {
   getGoogleHomeItemFromCart,
   getAlexaItemFromCart,
 } = require("../utils");
-const {
-  applyMacbookDiscount,
-  applyAlexaDiscount,
-  applyGoogleHomeDiscount,
-} = require("../services/discountService");
+
+const { promotions } = require("../data/promotions");
+const { PRODUCTID } = require("../data/productId");
 
 const applyPromotions = (sessionCart) => {
   applyMacbookPromotion(sessionCart);
@@ -18,18 +16,38 @@ const applyPromotions = (sessionCart) => {
 
 const applyMacbookPromotion = (sessionCart) => {
   const macbookItem = getMacbookFromCart(sessionCart);
-  if (macbookItem) applyMacbookDiscount(sessionCart, macbookItem);
+  const macBookPromotions = promotions.find(
+    (promotion) => promotion.productId === PRODUCTID.MacBookPro
+  ).promotions;
+  if (macbookItem && macBookPromotions.length > 0) {
+    macBookPromotions.forEach((promotion) => {
+      promotion(sessionCart, macbookItem);
+    });
+  }
 };
 
 const applyGoogleHomePromotion = (sessionCart) => {
   const googleHomeItem = getGoogleHomeItemFromCart(sessionCart);
-  if (googleHomeItem) applyGoogleHomeDiscount(sessionCart, googleHomeItem);
+  const googleHomePromotions = promotions.find(
+    (promotion) => promotion.productId === PRODUCTID.GoogleHome
+  ).promotions;
+  if (googleHomeItem && googleHomePromotions.length > 0) {
+    googleHomePromotions.forEach((promotion) => {
+      promotion(sessionCart, googleHomeItem);
+    });
+  }
 };
 
 const applyAlexaSpeakerPromotion = (sessionCart) => {
   const alexaItem = getAlexaItemFromCart(sessionCart);
-  if (alexaItem && alexaItem.quantity > 3)
-    applyAlexaDiscount(sessionCart, alexaItem);
+  const alexaPromotions = promotions.find(
+    (promotion) => promotion.productId === PRODUCTID.AlexaSpeaker
+  ).promotions;
+  if (alexaItem && alexaItem.quantity > 3 && alexaPromotions.length > 0) {
+    alexaPromotions.forEach((promotion) => {
+      promotion(sessionCart, alexaItem);
+    });
+  }
 };
 
 module.exports = {
