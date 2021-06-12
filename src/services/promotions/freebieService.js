@@ -1,12 +1,12 @@
 const { promotions, PROMOTION_TYPE } = require("../../data/promotions");
-const { getFreebieFromProducts } = require("../../utils");
+const { fetchProductById } = require("../../utils");
 const { getSessionProducts } = require("../productService");
 
 const getFreebiePromotions = () =>
   promotions.filter((promotion) => promotion.type === PROMOTION_TYPE.FREEBIE);
 
 const getFreebieItemToAdd = (products, promotion, item) => {
-  let freeBieQuantityInInventory = getFreebieFromProducts(
+  let freeBieQuantityInInventory = fetchProductById(
     products,
     promotion.condition.productId
   );

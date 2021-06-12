@@ -3,6 +3,7 @@ const {
   addProductToCart,
   resetRecords,
   removeProductFromCart,
+  getCart
 } = require(".");
 
 const { PRODUCTID } = require("../data/productId");
@@ -120,5 +121,11 @@ describe("CartTest", () => {
     expect(cart.totalPrice).toBe(109.5 * 4 - 109.5 * 4 * 0.1);
     cart = addProductToCart(PRODUCTID.AlexaSpeaker, 6);
     expect(cart.totalPrice).toBe(109.5 * 10 - 109.5 * 10 * 0.1);
+  });
+
+  test("getCart", () => {
+    addProductToCart(PRODUCTID.GoogleHome, 3)
+    const cart = getCart()
+    expect(cart.cartItems.length).toBe(1)
   });
 });

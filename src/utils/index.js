@@ -1,6 +1,6 @@
 const { PRODUCTID } = require("../data/productId");
 
-const findAndValidateByProductId = (products, id) => {
+const fetchProductById = (products, id) => {
   return products.find((product) => product.id === id);
 };
 
@@ -12,9 +12,6 @@ const isMacbook = (id) => id === PRODUCTID.MacBookPro;
 
 const getMacbookFromCart = (cart) =>
   cart.cartItems.find((item) => item.product.id === PRODUCTID.MacBookPro);
-
-const getFreebieFromProducts = (products, id) =>
-  products.find((product) => product.id === id);
 
 const getGoogleHomeItemFromCart = (cart) =>
   cart.cartItems.find((item) => item.product.id === PRODUCTID.GoogleHome);
@@ -33,10 +30,9 @@ const getCurrentItem = (id, sessionCart) => {
 
 module.exports = {
   isMacbook,
-  findAndValidateByProductId,
+  fetchProductById,
   validateProductQuantity,
   getMacbookFromCart,
-  getFreebieFromProducts,
   getGoogleHomeItemFromCart,
   convertToCustomFloat,
   getAlexaItemFromCart,

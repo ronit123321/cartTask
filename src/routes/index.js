@@ -1,5 +1,5 @@
 const {
-  findAndValidateByProductId,
+  fetchProductById,
   validateProductQuantity,
 } = require("../utils");
 
@@ -30,7 +30,7 @@ const resetRecords = () => {
 
 const addProductToCart = (id, quantity) => {
   const products = getSessionProducts();
-  const product = findAndValidateByProductId(products, id);
+  const product = fetchProductById(products, id);
   if (product && validateProductQuantity(product, quantity)) {
     reduceProductQuantity(products, product.id, quantity);
     const usesrCart = addProductToUserCart(product, quantity);
@@ -41,7 +41,7 @@ const addProductToCart = (id, quantity) => {
 
 const removeProductFromCart = (id, quantity) => {
   const products = getSessionProducts();
-  const product = findAndValidateByProductId(products, id);
+  const product = fetchProductById(products, id);
   if (product && validateProductQuantity(product, quantity)) {
     increaseProductQuantity(product.id, quantity);
     const usesrCart = removeProductFromUserCart(product, quantity);
